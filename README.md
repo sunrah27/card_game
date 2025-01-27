@@ -1,4 +1,5 @@
 **26/01/25**
+
     - Made a massive breakthrough in multiple fronts.
     - Finally got the `Stack` class working.
         - Every card will be in a `Stack` list.
@@ -8,6 +9,7 @@
     - Reading `stack` lists in reverse I was able to overcome pygame limitations.
 
 **25/01/25:**
+
     - Was forced to start looking in to game loop.
     - Figured out how to add drag and drop.
     - Figured out an approach for handling card stacking.
@@ -20,6 +22,7 @@
     - main game loop looks very messy atm.
 
 **24/01/25:**
+
     - Broke the project into different files `main.py`, `card.py`, `ability.py` and `render.py`.
     - Have a plan for my approach now:
         - `Card` class will cover every card.
@@ -34,19 +37,23 @@
     - Have to figure out how to do Summoning/Crafting.
 
 **23/01/25:**
+
     - Finally starting to understand OOP better and started to get an idea of how to design my code.
     - Spoke to Babbit about my approach.
     - Due to frustration I decided to look into `PyGame`. Wrote my first custome `draw_card()` method.
     - Woo hoo first ever actual use for `tuples` to define colour.
 
 **19/01/25:**
+
     - Deleted everything and only kept the base `Card` class.
     - Spent more time doing trial and error with my approach.
 
 **17/01/25:**
+
     - Messed around with trying to figure out different types of cards.
     - Created a lot of subclasses.
 
 **15/01/25:**
+
     - Decided to try and learn more about OOP by trying to create a game where everything is represented as cards.
     - Managed with the help of chatGPT to create the base `Card` class.
