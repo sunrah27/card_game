@@ -1,4 +1,18 @@
-**26/01/25**
+**28/01/25:**
+
+* Plan to focus on adding `stacks` to the game manager.
+* If all goes well I will update render to render cards in stacks.
+* Managed to render a `stack`.
+
+**27/01/25:**
+
+* Decided to focus on rendering today.
+* Broken `draw_card` into `draw_card` and `create_card`.
+* Undid the changes.
+* Updated `draw_card` to display additional data.
+* Added dragging function to main game loop.
+
+**26/01/25:**
 
 * Made a massive breakthrough in multiple fronts.
 * Finally got the `Stack` class working.
