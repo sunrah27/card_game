@@ -120,7 +120,7 @@ class Stack:
         for card in self.cards:
             card.x = self.x
             card.y = self.y
-
+    
     @staticmethod
     def from_cards(cards: list):
         """

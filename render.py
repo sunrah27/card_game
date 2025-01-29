@@ -95,3 +95,10 @@ class Render:
             shield_text_x = rect_width - offset - border - 2
             shield_text_y = rect_height - offset - border - 20
             self.screen.blit(shield_text, (shield_text_x, shield_text_y))
+    
+    def get_top_rect(mouse_pos, game_manager):
+        for stack in reversed(game_manager):            # Check from the topmost stack to bottommost stack
+            for card in reversed(stack.cards):          # Check from top card in the stack to the bottom card
+                if card.rect.collidepoint(mouse_pos):
+                    return stack, card                  # Return the card, not just the rect
+        return None, None
