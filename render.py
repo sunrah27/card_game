@@ -9,12 +9,12 @@ class Render:
         """
         Calls the draw_card() method to render the card stacks.
         """
-        if not stack.cards:  # Check if there are no cards in the stack
-            print("Stack is empty!")
-        else:
-            for i, card in enumerate(stack):
-                card.y = stack.y + (i * 30)
-                card.update_rect()
+        if stack.cards:
+            for i, card in enumerate(stack.cards):
+                if card in stack.cards:
+                    card.x = stack.x
+                    card.y = stack.y + (i * 30)
+                    card.update_rect()
                 self.draw_card(card, i)
 
     def draw_card(self, card: Card, i=0):
@@ -100,5 +100,5 @@ class Render:
         for stack in reversed(game_manager):            # Check from the topmost stack to bottommost stack
             for card in reversed(stack.cards):          # Check from top card in the stack to the bottom card
                 if card.rect.collidepoint(mouse_pos):
-                    return stack, card                  # Return the card, not just the rect
+                    return stack, card                  # Return the selected stack and card, not just the rect
         return None, None

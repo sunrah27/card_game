@@ -1,3 +1,9 @@
+**10/02/2025**
+* Decided to take a break after hitting a brick wall and wasn't making progress.
+* Got Platinum Trophy in Metaphor and Secret of Mana.
+* Managed to get a test version of stacking and dragging working.
+* Trying to rewrite the code to see if I can replicate it.
+
 **28/01/25:**
 
 * Plan to focus on adding `stacks` to the game manager.

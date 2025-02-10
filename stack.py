@@ -38,8 +38,12 @@ class Stack:
             cards (list, optional): A list of Card objects to initialize the stack with.
         """
         self.cards = cards if cards else []             # Deafult to [] if no stack is passed
-        self.x = self.cards[0].x if self.cards else 0   # Default to 0 if no cards
-        self.y = self.cards[0].y if self.cards else 0   # Default to 0 if no cards
+        if cards:
+            self.x = cards[0].x
+            self.y = cards[0].y
+        else:
+            self.x = 0
+            self.y = 0
 
     def __iter__(self) -> iter:
         """
@@ -49,6 +53,9 @@ class Stack:
             iterator: An iterator over the cards in the stack.
         """
         return iter(self.cards)
+
+    def __str__(self):
+        return "\n   -".join([f"{card.name}, {card.rect.topleft}" for card in self.cards])
 
     def get_top_card(self):
         """
@@ -102,25 +109,19 @@ class Stack:
 
     def update_position(self, mouse_pos):
         """
-        Update the position of the stack based on mouse movement.
-
-        This method allows the stack to follow the mouse during dragging, updating the
-        stack's position on the screen. Each card in the stack will also be repositioned 
-        accordingly.
-
+        Updates the position of the stack based on mouse movement (for dragging).
+        
         Args:
-            mouse_pos (tuple): A tuple representing the current position of the mouse 
-                               (x, y) used to reposition the stack.
+            mouse_pos (tuple): The new mouse position to set for the stack.
         """
-        # Update the stack's position based on mouse input (dragging)
-        self.x = mouse_pos[0] - self.cards[0].width // 2
-        self.y = mouse_pos[1] - self.cards[0].height // 8
+        self.x = mouse_pos[0] - self.cards[0].width // 2  # Centering based on the first card
+        self.y = mouse_pos[1] - self.cards[0].height // 2
 
-        # Update the position of all cards in the stack
+        # Update the position of all cards in the stack (they will all follow the stack's position)
         for card in self.cards:
             card.x = self.x
             card.y = self.y
-    
+
     @staticmethod
     def from_cards(cards: list):
         """
@@ -135,7 +136,7 @@ class Stack:
         Returns:
             Stack: A new stack initialized with the given cards.
         """
-        stack = Stack()
+        stack = Stack([])
         for card in cards:
             stack.add_card(card)
         return stack
