@@ -5,7 +5,6 @@ class Card:
     Base class for all cards in the game.
 
     Attributes:
-        key (str): Unique identifier for the card.
         name (str): Name of the card.
         desc (str): Description of the card.
         flavour (str): Additional flavour text for the card.
@@ -18,8 +17,6 @@ class Card:
         stack (int): Whether the card can be stacked with others (1 = yes, 0 = no).
         x (int): x-coordinate of the card's position on the game board.
         y (int): y-coordinate of the card's position on the game board.
-        parent (Card or None): The parent card in the stack, if applicable.
-        children (list): List of child cards stacked on top of this card.
         width (int): Width of the card.
         height (int): Height of the card.
         rect (pygame.Rect): Rect object representing the card's position and dimensions.
@@ -36,8 +33,7 @@ class Card:
         update_rect():
             Updates the position of the card's rectangle based on its current x and y coordinates.
     """
-    def __init__(self, key: str, name: str, desc: str, flavour: str, sprite: str, colour:tuple, value: int, hp: int, atk: int, card_type: str, stack: int, x: int, y: int):
-        self.key = key
+    def __init__(self, name: str, desc: str, flavour: str, sprite: str, colour:tuple, value: int, hp: int, atk: int, card_type: str, stack: int, x: int, y: int):
         self.name = name
         self.desc = desc
         self.flavour = flavour
@@ -50,8 +46,6 @@ class Card:
         self.stack = stack
         self.x = x
         self.y = y
-        self.parent = None
-        self.children = []
         self.width = 150
         self.height = 210
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
@@ -61,19 +55,11 @@ class Card:
 
     def is_dead(self):
         return self.hp <= 0
-
-    def add_child(self, child):
-        child.parent = self
-        self.children.append(child)
-    
-    def remove_child(self, child):
-        if child in self.children:
-            self.children.remove(child)
-            child.parent = None
     
     def update_rect(self):
         self.rect.topleft = (self.x, self.y)
-        
+
+
 class WitchCard(Card):
     """
     Class for Witch cards, representing units controlled by the player.
@@ -90,12 +76,12 @@ class WitchCard(Card):
             Finds and executes an ability by its name. This method searches through the Witch's 
             abilities and executes the matching one if found.
     """
-    def __init__(self, key: str, name: str, desc: str, flavour: str, sprite: str, colour: tuple, value: int, hp: int, atk: int, card_type: str, stack: int, x: int, y: int, abilities: list):
-        super().__init__(key, name, desc, flavour, sprite, colour, value, hp, atk, card_type, stack, x, y)
+    def __init__(self, name: str, desc: str, flavour: str, sprite: str, colour: tuple, value: int, hp: int, atk: int, card_type: str, stack: int, x: int, y: int, abilities: list):
+        super().__init__(name, desc, flavour, sprite, colour, value, hp, atk, card_type, stack, x, y)
         self.max_hp = hp
         self.shield = 0
         self.abilities = abilities or []
-    
+
     def perform_ability(self, ability_name: str, *args, **kwargs):
         for ability in self.abilities:
             if ability_name == ability_name:
@@ -118,12 +104,12 @@ class EnemyCard(Card):
             Finds and executes an ability by its name. This method searches through the Enemy's 
             abilities and executes the matching one if found.
     """
-    def __init__(self, key: str, name: str, desc: str, flavour: str, sprite: str, colour: tuple, value: int, hp: int, atk: int, card_type: str, stack: int, x: int, y: int, abilities: list):
-        super().__init__(key, name, desc, flavour, sprite, colour, value, hp, atk, card_type, stack, x, y)
+    def __init__(self, name: str, desc: str, flavour: str, sprite: str, colour: tuple, value: int, hp: int, atk: int, card_type: str, stack: int, x: int, y: int, abilities: list):
+        super().__init__(name, desc, flavour, sprite, colour, value, hp, atk, card_type, stack, x, y)
         self.max_hp = hp
         self.shield = 0
         self.abilities = abilities or []
-    
+
     def perform_ability(self, ability_name: str, *args, **kwargs):
         for ability in self.abilities:
             if ability_name == ability_name:

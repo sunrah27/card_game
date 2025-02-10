@@ -11,113 +11,86 @@ def setup_game():
     pygame.display.set_caption("My Card Game")
 
     # Create instances of cards
-    witch1 = WitchCard("witch1", "Fire Witch", "A fiery sorceress.", "Hot-headed and fearless.", "witch.png", (237, 81, 185), -1, 4, 1, "Witch", 1, 400, 400, witch_abilities)
-    witch2 = WitchCard("witch1", "Ninja", "A sneaky ninja.", "Quiet and stealthy, hides in the shadows.", "ninja.png", (237, 81, 185), -1, 2, 2, "Witch", 1, 50, 50, witch_abilities)
-    witch3 = WitchCard("witch1", "Worker", "A hard worker.", "A busy body always building something.", "boy.png", (237, 81, 185), -1, 1, 4, "Witch", 1, 50, 50, witch_abilities)
+    witch1 = WitchCard("Fire Witch", "A fiery sorceress.", "Hot-headed and fearless.", "witch.png", (237, 81, 185), -1, 4, 1,  "Witch", 1, 400, 400, witch_abilities)
+    witch2 = WitchCard("Ninja", "A sneaky ninja.", "Quiet and stealthy, hides in the shadows.", "ninja.png", (237, 81, 185), -1, 2, 2, "Witch", 1, 50, 50, witch_abilities)
+    witch3 = WitchCard("Worker", "A hard worker.", "A busy body always building something.", "boy.png", (237, 81, 185), -1, 1, 4, "Witch", 1, 50, 50, witch_abilities)
 
-    enemy = EnemyCard("enemy1", "Zombie", "A sneaky zombie.", "Smelly and green.", "zombine.png", (216, 57, 71), -1, 2, 1, "Enemy", 1, 210, 50, enemy_abilities)
+    enemy = EnemyCard("Zombie", "A sneaky zombie.", "Smelly and green.", "zombine.png", (216, 57, 71), -1, 2, 1, "Enemy", 1, 210, 50, enemy_abilities)
 
     # Create stack
     game_manager = [
         Stack(100, 100, [witch1, witch2, witch3]),
-        Stack(250, 100, [enemy]),
+        Stack(300, 100, [enemy]),
+        Stack(500, 100, [witch1, witch2, witch3]),
     ]
 
-    # Set up rendering
-    render = Render(screen)
-
-    return screen, game_manager, render
-
+    return screen, game_manager, Render(screen)
 
 def game_loop(screen, game_manager, render):
     clock = pygame.time.Clock()
-    running = True
+    dragging_stack = None
+    drag_offset = (0, 0)
+    SNAP_DISTANCE = 50
 
-    # Game loop function
-    selected_stack = None           #selected stack
-    selected_card = None            #selected card
-    original_position = None        #original position of selected card
-    original_mouse = None           #original mouse position
-    new_stack = None                #new stack for dragging
-
-    while running:
+    while True:
         screen.fill(BG_COLOUR)  # Clear screen with a background color
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+                return
         
             # Handle mouse input
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    mouse_pos = pygame.mouse.get_pos()
-                    
-                    selected_stack, selected_card = Render.get_top_rect(mouse_pos, game_manager)
-                    if selected_stack and selected_card:
-
-                        if original_mouse == None:
-                            original_mouse = pygame.mouse.get_pos()
-                            print(f"MD - {mouse_pos=}, {original_mouse=}")
-
-                        if original_position == None:
-                            original_position = (selected_card.x, selected_card.y)
-
-                        if new_stack == None:
-                            new_stack = Stack.remove_cards(selected_stack, selected_card)
-                            print(f"MD - New stack:\n   -{new_stack}")
-
-                        new_stack.x = mouse_pos[0] - 150 // 2
-                        new_stack.y = mouse_pos[1] - 210 // 2
-                        new_stack.cards[0].x = new_stack.x
-                        new_stack.cards[0].y = new_stack.y
-
-                        print(f"MD - Printing new_stack:\n   -{new_stack}")
-                        print(f"MD - new_stack pos: {new_stack.x, new_stack.y=}")
-                        print(f"MD - {mouse_pos=}, {original_mouse=}")
-                        if new_stack and new_stack.cards:
-                            game_manager.append(new_stack)
-                            for i, stack in enumerate(game_manager):
-                                for j, card in enumerate(stack.cards):
-                                    print(f"MD - Stack:{i}, Card: {j} - {card.name}")
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                mouse_pos = pygame.mouse.get_pos()
+                for stack in reversed(game_manager):
+                    index = stack.get_clicked_card_index(mouse_pos)
+                    if index != -1:
+                        dragging_stack = stack.split(index)
+                        if dragging_stack:
+                            drag_offset = (mouse_pos[0] - dragging_stack.x, mouse_pos[1] - dragging_stack.y)
+                            game_manager.append(dragging_stack)
+                        break
             
-            if event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 1:
-                    mouse_pos = pygame.mouse.get_pos()
-                    print(f"MU: {mouse_pos=}, {original_mouse=}, {original_position=}")
-                    if mouse_pos == original_mouse:
-                        print("MU - True")
-                        selected_stack, selected_card = Render.get_top_rect(original_position, game_manager)
+            elif event.type == pygame.MOUSEMOTION and dragging_stack:
+                mouse_pos = pygame.mouse.get_pos()
+                dragging_stack.update_position(mouse_pos, drag_offset)
 
-                        if selected_stack == None:
-                            print("MU - Selected stack is None")
-                            new_stack.x = original_position[0]
-                            new_stack.y = original_position[1]
-                            game_manager.append(Stack.add_card(new_stack, new_stack.cards[0]))
-                        #print(f"MU - Selected stack:\n   -{selected_stack}, Selected card: {selected_card}")
-                        
-                        # if selected_stack is not None and new_stack is not None:
-                        #     # Add the cards back to the selected stack
-                        #     for card in new_stack.cards:    
-                        #         selected_stack.add_card(card)
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and dragging_stack:
+                closest_stack = None
+                min_distance = float('inf')
 
-                        # selected_stack = None
-                        # selected_card = None
-                        # original_position = None
-                        # original_mouse = 0, 0
+                # Find closest stack to snap to
+                for stack in game_manager:
+                    if stack == dragging_stack or not stack.cards:
+                        continue
+                    dx = dragging_stack.x - stack.x
+                    dy = dragging_stack.y - (stack.y + len(stack.cards)*30)
+                    distance = (dx**2 + dy**2)**0.5
+                    if distance < SNAP_DISTANCE and distance < min_distance:
+                        min_distance = distance
+                        closest_stack = stack
 
-                        # if new_stack in game_manager:
-                        #     game_manager.remove(new_stack)
-                        #     new_stack = None
+                # Merge stacks or create new
+                if closest_stack:
+                    for card in dragging_stack.cards:
+                        closest_stack.add_card(card)
+                    game_manager.remove(dragging_stack)
+                else:
+                    # Boundary check
+                    if not (0 < dragging_stack.x < SCREEN_WIDTH-150 and 
+                           0 < dragging_stack.y < SCREEN_HEIGHT-210):
+                        # Return to original stack
+                        pass
 
-                        # for i, stack in enumerate(game_manager):
-                        #         for j, card in enumerate(stack.cards):
-                        #             print(f"MU - Stack:{i}, Card: {j} - {card.name}")
+                dragging_stack = None
+
+        # Clean up empty stacks
+        game_manager[:] = [stack for stack in game_manager if stack.cards]
 
         # Render all stacks
-        print(f"Game Manager = {len(game_manager)}")
-        game_manager = [stack for stack in game_manager if isinstance(stack, Stack) and len(stack.cards) > 0]
         for stack in game_manager:
             render.draw_stack(stack)
 
         pygame.display.flip()
-        clock.tick(5)  # Limit to 5 FPS
+        clock.tick(FPS)  # Set FPS

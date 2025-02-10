@@ -1,142 +1,96 @@
-#from inspect import stack
 from card import Card
+import pygame
 
 class Stack:
     """
-    A class to represent a stack of cards.
+    Represents a stack of cards.
 
-    This class manages a collection of cards, allowing them to be stacked, added, 
-    removed, and manipulated in a parent-child relationship. The top-most card in 
-    the stack is considered the parent of all subsequent cards.
+    This class manages a collection of cards, allowing them to be stacked, 
+    added, removed, and manipulated in a parent-child relationship. The 
+    top-most card in the stack is considered the parent of all subsequent cards.
 
     Attributes:
-        cards (list): A list of Card objects that are part of the stack.
         x (int): The x-coordinate of the stack's position.
         y (int): The y-coordinate of the stack's position.
-
-    Methods:
-        get_top_card():
-            Get the top card of the stack.
-        add_card(card: Card):
-            Adds a card to the stack. If the stack is empty, the card is added without 
-            a parent. Otherwise, the card becomes a child of the current top card.
-        remove_cards(start_card: Card):
-            Removes all cards from the stack starting from the given card. The stack is 
-            split, and the removed cards' parent-child relationships are broken.
-        from_cards(cards: list):
-            Creates a new stack from a given list of Card objects. This method is used 
-            when you need to create a stack from existing cards without manually adding 
-            them one by one.
-        update_position(mouse_pos):
-            Updates the position of the stack based on mouse movement (for dragging).
+        cards (list[Card]): A list of Card objects that are part of the stack.
     """
-    def __init__(self, cards: list):
+    def __init__(self, x, y, cards=None):
         """
-        Initialize the Stack with an optional list of cards.
+        Initializes the Stack with an optional list of cards.
 
         Args:
-            cards (list, optional): A list of Card objects to initialize the stack with.
+            x (int): The x-coordinate of the stack's position.
+            y (int): The y-coordinate of the stack's position.
+            cards (list[Card], optional): A list of Card objects to initialize the stack with. Defaults to an empty list.
         """
-        self.cards = cards if cards else []             # Deafult to [] if no stack is passed
-        if cards:
-            self.x = cards[0].x
-            self.y = cards[0].y
-        else:
-            self.x = 0
-            self.y = 0
+        self.x = x
+        self.y = y
+        self.cards = cards if cards else []
 
-    def __iter__(self) -> iter:
+    def __iter__(self):
         """
-        Make the Stack iterable by iterating over the cards list.
+        Returns an iterator over the cards in the stack.
 
         Returns:
-            iterator: An iterator over the cards in the stack.
+            iterator: An iterator over the Card objects in the stack.
         """
         return iter(self.cards)
 
-    def __str__(self):
-        return "\n   -".join([f"{card.name}, {card.rect.topleft}" for card in self.cards])
-
-    def get_top_card(self):
-        """
-        Get the top card of the stack.
-
-        Returns:
-            Card: The top card, or None if the stack is empty.
-        """
-        if not self.cards:
-            return None
-        return self.cards[-1]
-
     def add_card(self, card: Card):
         """
-        Add a card to the stack.
+        Adds a card to the stack. If the stack is not empty, the new card is added to the top card.
 
         Args:
-            card (Card): The card to be added.
+            card (Card): The card to be added to the stack.
         """
-        if not self.cards:
-            card.parent = None  # First card in the stack
-        else:
-            self.cards[-1].add_child(card)  # Link to the current top card
         self.cards.append(card)
-    
-    def remove_cards(self, start_card: Card):
+        card.x = self.x
+        card.y = self.y + (len(self.cards) - 1) * 30
+
+    def get_clicked_card_index(self, mouse_pos):
         """
-        Remove cards from the stack starting from the specified card.
+        Determines the index of the card in the stack that was clicked.
 
         Args:
-            start_card (Card): The card from which to start removing.
+            mouse_pos (tuple[int, int]): The (x, y) coordinates of the mouse click.
 
         Returns:
-            Stack: A new stack containing the removed cards.
+            int: The index of the clicked card, or -1 if no card was clicked.
         """
-        if start_card not in self.cards:
+        x, y = mouse_pos
+        for i in reversed(range(len(self.cards))):
+            card_y = self.y + i * 30
+            card_rect = pygame.Rect(self.x, card_y, 150, 210)
+            if card_rect.collidepoint(x, y):
+                return i
+        return -1
+
+    def split(self, index):
+        """
+        Splits the stack at the specified index, creating a new stack with the cards from the given index onward.
+
+        Args:
+            index (int): The index at which to split the stack.
+
+        Returns:
+            Stack | None: A new Stack containing the split-off cards, or None if the index is out of range.
+        """
+        if index < 0 or index >= len(self.cards):
             return None
+        new_stack = Stack(self.x, self.y + index*30, self.cards[index:])
+        self.cards = self.cards[:index]
+        return new_stack
 
-        # Split the stack
-        start_index = self.cards.index(start_card)
-        removed_cards = self.cards[start_index:]
-        self.cards = self.cards[:start_index]
-
-        # Break parent-child relationships
-        if self.cards:
-            self.cards[-1].children = []
-        for card in removed_cards:
-            card.parent = None
-        
-        return Stack.from_cards(removed_cards)
-
-    def update_position(self, mouse_pos):
+    def update_position(self, mouse_pos, drag_offset):
         """
-        Updates the position of the stack based on mouse movement (for dragging).
-        
+        Updates the stack's position based on mouse movement, used for dragging functionality.
+
         Args:
-            mouse_pos (tuple): The new mouse position to set for the stack.
+            mouse_pos (tuple[int, int]): The new mouse position (x, y).
+            drag_offset (tuple[int, int]): The offset of the drag start relative to the stack's position.
         """
-        self.x = mouse_pos[0] - self.cards[0].width // 2  # Centering based on the first card
-        self.y = mouse_pos[1] - self.cards[0].height // 2
-
-        # Update the position of all cards in the stack (they will all follow the stack's position)
-        for card in self.cards:
+        self.x = mouse_pos[0] - drag_offset[0]
+        self.y = mouse_pos[1] - drag_offset[1]
+        for i, card in enumerate(self.cards):
             card.x = self.x
-            card.y = self.y
-
-    @staticmethod
-    def from_cards(cards: list):
-        """
-        Create a new Stack from a list of cards.
-
-        This static method is useful for creating a stack from an existing set of cards
-        without needing to manually add each card.
-
-        Args:
-            cards (list): The list of Card objects.
-
-        Returns:
-            Stack: A new stack initialized with the given cards.
-        """
-        stack = Stack([])
-        for card in cards:
-            stack.add_card(card)
-        return stack
+            card.y = self.y + i * 30

@@ -2,7 +2,19 @@
 * Decided to take a break after hitting a brick wall and wasn't making progress.
 * Got Platinum Trophy in Metaphor and Secret of Mana.
 * Managed to get a test version of stacking and dragging working.
-* Trying to rewrite the code to see if I can replicate it.
+* Got stacking and dragging working.
+* Removed from `Card` class:
+    * `parent-child` link
+    * `add_child()` method
+    * `remove_child` method
+* Updated `Stack` class:
+    * updated `add_child()` method to remove link to parent-child link.
+    * created `get_clicked_card_index()` method to retun which card you click on.
+    * created `split()` method to break one stack into two stack.
+    * updated `update_position()` method by cleaning up the code.
+* Updated `Render` class:
+    * cleaned up `draw_stack()` method.
+* 
 
 **28/01/25:**
 

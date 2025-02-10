@@ -15,12 +15,13 @@ class Render:
                     card.x = stack.x
                     card.y = stack.y + (i * 30)
                     card.update_rect()
-                self.draw_card(card, i)
+                self.draw_card(card)
 
-    def draw_card(self, card: Card, i=0):
+    def draw_card(self, card: Card):
         """
         Renders the card template on the screen using the card's details.
         """
+        # Original rendering logic below
         border = 2
         offset = 12
         border_radius = 7
@@ -48,20 +49,21 @@ class Render:
         self.screen.blit(header_surface, (x + offset, y + offset))
 
         # Draw the body
-        pygame.draw.rect(self.screen, card_colour, (x + offset + border, y + border + offset + 30, rect_width - 2 * offset - 2 * border, rect_height - 2 * offset - 2 * border - 30))
+        xx = x + offset + border
+        yy = y + border + offset + 30
+        wwidth = rect_width - 2 * offset - 2 * border
+        hheight = rect_height - 2 * offset - 2 * border - 30
+        pygame.draw.rect(self.screen, card_colour, (xx, yy, wwidth, hheight))
         
-        # Render sprite image here
-        image = pygame.image.load(f"assets/{card.sprite}").convert_alpha()
-        # get centre of the card
-        centre_x = card.x + rect_width // 2
-        cantre_y = card.y + rect_height // 2
-        # resize image to 100 x 100
-        scaled_image = pygame.transform.scale(image, (100, 100))
-        # calculate image start position
-        self.screen.blit(scaled_image, (centre_x - 50, cantre_y - 50))
-        # draw image
+        # Render sprite image
+        try:
+            image = pygame.image.load(f"assets/{card.sprite}").convert_alpha()
+            scaled_image = pygame.transform.scale(image, (100, 100))
+            self.screen.blit(scaled_image, (x + rect_width//2 - 50, y + rect_height//2 - 50))
+        except Exception as e:
+            print(f"Error loading image: {e}")
 
-        # Calculate position to center the text horizontally and vertically in the header area
+        # Card name
         text_surface = header_font.render(card.name, True, (255, 255, 255))
         text_width, text_height = header_font.size(card.name)
         text_x = x + offset + (rect_width - 2 * offset - text_width) // 2
@@ -71,34 +73,21 @@ class Render:
         # Atk/Value Text
         if card.value == -1:
             av_text = stat_font.render(str(card.atk), True, (255, 255, 255))
-            av_text_width, av_text_height = stat_font.size(str(card.atk))
         else:
             av_text = stat_font.render(str(card.value), True, (255, 255, 255))
-            av_text_width, av_text_height = stat_font.size(str(card.value))
         left_x = x + offset + border + 5
-        bottom_y = y + rect_height - offset - border - av_text_height - 5
+        bottom_y = y + rect_height - offset - border - stat_font.get_height() - 5
         self.screen.blit(av_text, (left_x, bottom_y))
 
-        # check card for HP
+        # HP display
         if card.hp != -1:
             hp_text = stat_font.render(str(card.hp), True, (255, 255, 255))
-            hp_text_width, hp_text_height = stat_font.size(str(card.hp))
-            right_x = x + rect_width - offset - border - hp_text_width - 5
+            right_x = x + rect_width - offset - border - hp_text.get_width() - 5
             self.screen.blit(hp_text, (right_x, bottom_y))
-        else:
-            # Add sprite for building image
-            pass
 
-        # check card for shield
+        # Shield display
         if card.shield > 0:
             shield_text = stat_font.render(str(card.shield), True, (255, 255, 255))
-            shield_text_x = rect_width - offset - border - 2
-            shield_text_y = rect_height - offset - border - 20
+            shield_text_x = x + rect_width - offset - border - shield_text.get_width() - 5
+            shield_text_y = y + offset + 5
             self.screen.blit(shield_text, (shield_text_x, shield_text_y))
-    
-    def get_top_rect(mouse_pos, game_manager):
-        for stack in reversed(game_manager):            # Check from the topmost stack to bottommost stack
-            for card in reversed(stack.cards):          # Check from top card in the stack to the bottom card
-                if card.rect.collidepoint(mouse_pos):
-                    return stack, card                  # Return the selected stack and card, not just the rect
-        return None, None
