@@ -4,16 +4,23 @@ from card import WitchCard, EnemyCard
 from stack import Stack
 from ability import *
 from render import Render
+from user_interface import UIButton
 
 # Define game setup function
 def setup_game():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("My Card Game")
 
+    # Create UI elements
+    font = pygame.font.Font(None, 32)
+    AddButton = UIButton(0, SCREEN_HEIGHT-100, 150, 100, (200,0,0), "Add Card", font)
+
     # Create instances of cards
     witch1 = WitchCard("Fire Witch", "A fiery sorceress.", "Hot-headed and fearless.", "witch.png", (237, 81, 185), -1, 4, 1,  "Witch", 1, 400, 400, witch_abilities)
-    witch2 = WitchCard("Ninja", "A sneaky ninja.", "Quiet and stealthy, hides in the shadows.", "ninja.png", (237, 81, 185), -1, 2, 2, "Witch", 1, 50, 50, witch_abilities)
-    witch3 = WitchCard("Worker", "A hard worker.", "A busy body always building something.", "boy.png", (237, 81, 185), -1, 1, 4, "Witch", 1, 50, 50, witch_abilities)
+    witch2 = WitchCard("Ninja", "A sneaky ninja.", "Quiet and stealthy, hides in the shadows.", "ninja.png", (237, 181, 185), -1, 2, 2, "Witch", 1, 50, 50, witch_abilities)
+    witch3 = WitchCard("Worker", "A hard worker.", "A busy body always building something.", "boy.png", (50, 50, 250), -1, 1, 4, "Witch", 1, 50, 50, witch_abilities)
+
+    witch1 = WitchCard("Fire Witch", "A fiery sorceress.", "Hot-headed and fearless.", "witch.png", (237, 81, 185), -1, 4, 1,  "Witch", 1, 5, 480, witch_abilities)
 
     enemy = EnemyCard("Zombie", "A sneaky zombie.", "Smelly and green.", "zombine.png", (216, 57, 71), -1, 2, 1, "Enemy", 1, 210, 50, enemy_abilities)
 
@@ -22,15 +29,16 @@ def setup_game():
         Stack(100, 100, [witch1, witch2, witch3]),
         Stack(300, 100, [enemy]),
         Stack(500, 100, [witch1, witch2, witch3]),
+        Stack(5, 480, [witch1]),
     ]
 
-    return screen, game_manager, Render(screen)
+    return screen, game_manager, AddButton, Render(screen, AddButton)
 
-def game_loop(screen, game_manager, render):
+def game_loop(screen, game_manager, AddButton, render):
     clock = pygame.time.Clock()
     dragging_stack = None
     drag_offset = (0, 0)
-    SNAP_DISTANCE = 50
+    SNAP_DISTANCE = 100
 
     while True:
         screen.fill(BG_COLOUR)  # Clear screen with a background color
@@ -43,6 +51,8 @@ def game_loop(screen, game_manager, render):
             # Handle mouse input
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
+                if AddButton.is_clicked(mouse_pos):
+                    AddButton.add_card_click(game_manager)
                 for stack in reversed(game_manager):
                     index = stack.get_clicked_card_index(mouse_pos)
                     if index != -1:
@@ -92,5 +102,6 @@ def game_loop(screen, game_manager, render):
         for stack in game_manager:
             render.draw_stack(stack)
 
+        render.draw_ui()
         pygame.display.flip()
         clock.tick(FPS)  # Set FPS

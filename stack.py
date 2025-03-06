@@ -36,6 +36,11 @@ class Stack:
         """
         return iter(self.cards)
 
+    def __str__(self):
+        # Returns a string representation of the Stack's details
+        card_names = [card.name for card in self.cards]  # Assuming cards have a 'name' attribute
+        return f"Stack at ({self.x}, {self.y}) with cards: {', '.join(card_names)}"
+
     def add_card(self, card: Card):
         """
         Adds a card to the stack. If the stack is not empty, the new card is added to the top card.

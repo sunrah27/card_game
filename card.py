@@ -68,7 +68,9 @@ class WitchCard(Card):
 
     Attributes:
         max_hp (int): Maximum HP of the Witch card, used to track the card's health limits.
+        max_atk (int): Maximum attack value of the Witch card, used to track the card's offensive limits.
         shield (int): Amount of shield protection on the Witch card.
+        max_shield (int): Maximum shield value of the Witch card, used to track the card's defensive limits.
         abilities (list): List of abilities that the Witch card can perform.
 
     Methods:
@@ -79,7 +81,9 @@ class WitchCard(Card):
     def __init__(self, name: str, desc: str, flavour: str, sprite: str, colour: tuple, value: int, hp: int, atk: int, card_type: str, stack: int, x: int, y: int, abilities: list):
         super().__init__(name, desc, flavour, sprite, colour, value, hp, atk, card_type, stack, x, y)
         self.max_hp = hp
+        self.max_atk = atk
         self.shield = 0
+        self.max_shield = 0
         self.abilities = abilities or []
 
     def perform_ability(self, ability_name: str, *args, **kwargs):

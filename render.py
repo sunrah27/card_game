@@ -2,10 +2,14 @@ import pygame
 from card import Card
 
 class Render:
-    def __init__(self, screen):
+    def __init__(self, screen, button) -> None:
         self.screen = screen
+        self.button = button
 
-    def draw_stack(self, stack):
+    def draw_ui(self):
+        self.button.draw(self.screen)
+
+    def draw_stack(self, stack) -> None:
         """
         Calls the draw_card() method to render the card stacks.
         """
@@ -17,7 +21,7 @@ class Render:
                     card.update_rect()
                 self.draw_card(card)
 
-    def draw_card(self, card: Card):
+    def draw_card(self, card: Card) -> None:
         """
         Renders the card template on the screen using the card's details.
         """

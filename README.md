@@ -1,3 +1,13 @@
+**06/03/2025**
+* Took a break.
+* Added a new `user_interface.py` file which will be developed further.
+    * Need to plan how to build the UI class.
+    * Will likely need to update Render class as well
+* Created `UIButton` class.
+* Can add a `Witch` card to the board.
+* Learned `for` loops have an `else` statement.
+* Next update should implement time passage and atleast one card action.
+
 **10/02/2025**
 * Decided to take a break after hitting a brick wall and wasn't making progress.
 * Got Platinum Trophy in Metaphor and Secret of Mana.
@@ -14,7 +24,6 @@
     * updated `update_position()` method by cleaning up the code.
 * Updated `Render` class:
     * cleaned up `draw_stack()` method.
-* 
 
 **28/01/25:**
 
