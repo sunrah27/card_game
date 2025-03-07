@@ -1,4 +1,11 @@
-**06/03/2025**
+**07/03/2025:**
+* Started building up the start menu.
+* Need to change my approach and have a way to handle Game State.
+* Also realised I need to build out managers for UI, Audio and Inputs.
+* Created a sub dir v000 and will try all of this out slowly.
+* Will allow me to keep existing code.
+
+**06/03/2025:**
 * Took a break.
 * Added a new `user_interface.py` file which will be developed further.
     * Need to plan how to build the UI class.
@@ -8,7 +15,7 @@
 * Learned `for` loops have an `else` statement.
 * Next update should implement time passage and atleast one card action.
 
-**10/02/2025**
+**10/02/2025:**
 * Decided to take a break after hitting a brick wall and wasn't making progress.
 * Got Platinum Trophy in Metaphor and Secret of Mana.
 * Managed to get a test version of stacking and dragging working.
