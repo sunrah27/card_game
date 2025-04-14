@@ -49,8 +49,6 @@ class GameplayScreen:
             self.renderer.draw_stack(stack)
 
     def handle_input(self, events):
-        self.add_card_button.update()
-
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
