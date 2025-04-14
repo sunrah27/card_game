@@ -61,7 +61,7 @@ class Render:
         
         # Render sprite image
         try:
-            image = pygame.image.load(f"assets/{card.sprite}").convert_alpha()
+            image = pygame.image.load(f"assets/sprites/{card.sprite}").convert_alpha()
             scaled_image = pygame.transform.scale(image, (100, 100))
             self.screen.blit(scaled_image, (x + rect_width//2 - 50, y + rect_height//2 - 50))
         except Exception as e:
