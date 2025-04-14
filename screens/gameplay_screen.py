@@ -48,10 +48,10 @@ class GameplayScreen:
         for stack in self.stacks:
             self.renderer.draw_stack(stack)
     
-    def handle_events(self, events):
+    def handle_input(self):
         self.add_card_button.update()
 
-        for event in events:
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
