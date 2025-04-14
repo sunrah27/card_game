@@ -171,5 +171,6 @@ cython_debug/
 .pypirc
 
 card_stats.csv
+_ignore/
 practise/
 venv/

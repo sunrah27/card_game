@@ -1,5 +1,5 @@
 import pygame
-from card import Card
+from logic.card import Card
 
 class Render:
     def __init__(self, screen, button) -> None:

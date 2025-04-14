@@ -1,3 +1,8 @@
+**14/04/2025**
+* Decided to pick up again
+* Plan this time is to figure out the new code design
+    * Need to create logic to manage UI, Screens, Audio, Input etc...
+
 **07/03/2025:**
 * Started building up the start menu.
 * Need to change my approach and have a way to handle Game State.

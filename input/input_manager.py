@@ -1,6 +1,3 @@
-# input_manager.py - Handles player input
-#     Processes keyboard/mouse input and triggers actions.
-
 class InputManager:
     def __init__(self):
         self.key_inputs = []  # You will eventually track keys that are pressed

@@ -1,6 +1,6 @@
 import pygame
 import os
-from ui_manager import Button
+from ui.ui_manager import Button
 
 class StartScreen:
     def __init__(self, screen, game_state_manager):

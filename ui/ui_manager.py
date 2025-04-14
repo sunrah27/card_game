@@ -1,7 +1,3 @@
-# ui_manager.py - Manages UI elements
-#     Holds UI components and ensures they are updated when needed.
-#     Works alongside Render to display UI.
-
 import pygame
 
 class UIManager:
