@@ -8,7 +8,8 @@ class CharacterSelectionScreen:
         self.game_state_manager = game_state_manager
 
         # Load the background image using the correct path
-        asset_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'bg_placeholder.png')
+        asset_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'bg', 'bg_placeholder.png')
+
         self.background = pygame.image.load(asset_path)
         self.background = pygame.transform.scale(self.background, (self.screen.get_width(), self.screen.get_height()))
 
@@ -43,10 +44,12 @@ class CharacterSelectionScreen:
     def select_witch_1(self):
         print("Witch 1 selected")
         # Add functionality for starting the game with Witch 1
+        self.game_state_manager.change_state("gameplay_screen")
 
     def select_witch_2(self):
         print("Witch 2 selected")
         # Add functionality for starting the game with Witch 2
+        self.game_state_manager.change_state("gameplay_screen")
 
     def go_back(self):
         # Go back to the start screen

@@ -8,7 +8,7 @@ class StartScreen:
         self.game_state_manager = game_state_manager
 
         # Load the background image using the correct path
-        asset_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'bg_placeholder.png')
+        asset_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'bg', 'bg_placeholder.png')
         self.background = pygame.image.load(asset_path)
         self.background = pygame.transform.scale(self.background, (self.screen.get_width(), self.screen.get_height()))
 
@@ -44,7 +44,7 @@ class StartScreen:
         self.quit_button.update()
 
     def start_new_game(self):
-        self.game_state_manager.change_state("character_selection_screen")
+        self.game_state_manager.change_state("character_selection")
 
     def load_game(self):
         pass

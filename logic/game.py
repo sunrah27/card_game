@@ -1,7 +1,7 @@
 import pygame
 from logic.game_state import GameStateManager
-from screens.stage_start_screen import StartScreen
-from screens.stage_character_selection_screen import CharacterSelectionScreen
+from screens.start_screen import StartScreen
+from screens.character_selection import CharacterSelectionScreen
 from config import *
 
 # Initilise Pygame
