@@ -34,6 +34,11 @@ class GameplayScreen:
     
     def render(self):
         self.screen.fill(BG_COLOUR)
-        self.renderer.draw(self.stacks)
+        for stack in self.stacks:
+            self.renderer.draw_stack(stack)
+
         # self.add_card_button.draw(self.screen)
         pygame.display.flip()
+    
+    def handle_input(self):
+        pass
