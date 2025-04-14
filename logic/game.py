@@ -36,13 +36,16 @@ class Game:
     def run(self):
         """Start the game."""
         clock = pygame.time.Clock()
-
         while True:
-            for event in pygame.event.get():
+            events = pygame.event.get()
+            
+            for event in events:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
-                self.game_state_manager.handle_input()
+
+            self.game_state_manager.handle_input(events)
+            self.game_state_manager.render()
 
             # Render the current screen
             self.game_state_manager.render()

@@ -60,3 +60,6 @@ class Button:
         """Simulate a button click."""
         print(f"Button clicked: {self.label}")
         self.action()   # Call the action associated with the button
+
+    def is_clicked(self, mouse_pos):
+        return self.rect.collidepoint(mouse_pos)

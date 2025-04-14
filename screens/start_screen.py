@@ -36,7 +36,7 @@ class StartScreen:
         self.option_button.render(self.screen)
         self.quit_button.render(self.screen)
 
-    def handle_input(self):
+    def handle_input(self, events):
         # Handle button clicks
         self.new_game_button.update()
         self.load_game_button.update()

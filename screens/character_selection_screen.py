@@ -35,7 +35,7 @@ class CharacterSelectionScreen:
         self.witch_2_button.render(self.screen)
         self.back_button.render(self.screen)
 
-    def handle_input(self):
+    def handle_input(self, events):
         # Handle button clicks
         self.witch_1_button.update()
         self.witch_2_button.update()

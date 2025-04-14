@@ -16,8 +16,8 @@ class GameplayScreen:
 
         self.renderer = Render(self.screen, None)
         self.stacks = []
-        self.dragging_card = None
-        self.dragging_card_offset = (0, 0)
+        self.dragging_stack = None
+        # self.dragging_card_offset = (0, 0)
         self.SNAP_DISTANCE = 100
         self.setup_game()
     
@@ -47,20 +47,19 @@ class GameplayScreen:
 
         for stack in self.stacks:
             self.renderer.draw_stack(stack)
-    
-    def handle_input(self):
+
+    def handle_input(self, events):
         self.add_card_button.update()
 
-        for event in pygame.event.get():
+        for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
 
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-
                 if self.add_card_button.is_clicked(mouse_pos):
-                    self.add_card_button.add_card_click(self.stacks)
+                    self.add_card_button.click()
 
                 for stack in reversed(self.stacks):
                     index = stack.get_clicked_card_index(mouse_pos)
@@ -115,9 +114,7 @@ class GameplayScreen:
         for stack in self.stacks:
             if stack.x == new_x and stack.y == new_y:
                 stack.add_card(witch1)
-                print(f"Added card to existing stack at ({stack.x}, {stack.y})")
                 break
         else:
             new_stack = Stack(new_x, new_y, [witch1])
             self.stacks.append(new_stack)
-            print(f"Added card to new stack at ({new_x}, {new_y})")

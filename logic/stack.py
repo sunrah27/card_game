@@ -84,6 +84,7 @@ class Stack:
             return None
         new_stack = Stack(self.x, self.y + index*30, self.cards[index:])
         self.cards = self.cards[:index]
+        print("New stack created:", new_stack)
         return new_stack
 
     def update_position(self, mouse_pos, drag_offset):

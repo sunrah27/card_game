@@ -18,8 +18,9 @@ class GameStateManager:
             screen = self.screens[self.current_state]
             screen.render()
 
-    def handle_input(self):
+    def handle_input(self, events):
         """Handle input events for the current screen."""
         if self.current_state:
             screen = self.screens[self.current_state]
-            screen.handle_input()
+            if hasattr(screen, 'handle_input'):
+                screen.handle_input(events)
