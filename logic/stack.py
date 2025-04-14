@@ -1,5 +1,5 @@
-from card import Card
 import pygame
+from logic.card import Card
 
 class Stack:
     """

@@ -29,6 +29,7 @@ class Button:
     y (int): The y-coordinate of the button.
     width (int): The width of the button.
     height (int): The height of the button.
+    action (function): The function to execute when the button is clicked.
     """
     def __init__(self, text: str, x: int, y: int, width: int, height: int, action):
         self.label = text

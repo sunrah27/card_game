@@ -2,23 +2,16 @@ import pygame
 from logic.card import WitchCard, EnemyCard
 from logic.ability import witch_abilities, enemy_abilities
 from logic.stack import Stack
-from config import *
 from ui.ui_manager import Button
+from ui.render import Render
+from config import *
 
 class GameplayScreen:
     def __init__(self, screen, game_state_manager):
         self.screen = screen
         self.game_state_manager = game_state_manager
-        self.screen.fill(BG_COLOUR)
-
-        font = pygame.font.Font(None, 32)
-        self.add_card_button = Button(0, SCREEN_HEIGHT-100, 150, 100, (200,0,0), "Add Card", font)
-
-        self.cards = []
+        self.renderer = Render(self.screen, None)
         self.stacks = []
-        self.selected_card = None
-        self.offset_x = 0
-        self.offset_y = 0
         self.setup_game()
     
     def setup_game(self):
@@ -30,9 +23,17 @@ class GameplayScreen:
         enemy = EnemyCard("Zombie", "A sneaky zombie.", "Smelly and green.", "zombine.png", (216, 57, 71), -1, 2, 1, "Enemy", 1, 210, 50, enemy_abilities)
 
         # Create stack
-        self.stacks.append(
+        self.stacks.extend([
             Stack(100, 100, [witch1, witch2, witch3]),
             Stack(300, 100, [enemy]),
             Stack(500, 100, [witch1, witch2, witch3]),
             Stack(5, 480, [witch1])
-        )
+        ])
+
+        self.add_card_button = Button("Add Card", 0, SCREEN_HEIGHT-100, 150, 100, None)
+    
+    def render(self):
+        self.screen.fill(BG_COLOUR)
+        self.renderer.draw(self.stacks)
+        # self.add_card_button.draw(self.screen)
+        pygame.display.flip()

@@ -44,7 +44,7 @@ class StartScreen:
         self.quit_button.update()
 
     def start_new_game(self):
-        self.game_state_manager.change_state("character_selection")
+        self.game_state_manager.change_state("character_selection_screen")
 
     def load_game(self):
         pass

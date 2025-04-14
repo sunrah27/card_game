@@ -1,7 +1,8 @@
 import pygame
 from logic.game_state import GameStateManager
 from screens.start_screen import StartScreen
-from screens.character_selection import CharacterSelectionScreen
+from screens.character_selection_screen import CharacterSelectionScreen
+from screens.gameplay_screen import GameplayScreen
 from config import *
 
 # Initilise Pygame
@@ -21,10 +22,12 @@ class Game:
         # Create screens
         self.start_screen = StartScreen(self.screen, self.game_state_manager)
         self.character_selection_screen = CharacterSelectionScreen(self.screen, self.game_state_manager)
+        self.gameplay_screen = GameplayScreen(self.screen, self.game_state_manager)
 
         # Add screens to the game state manager
         self.game_state_manager.add_screen("start_screen", self.start_screen)
         self.game_state_manager.add_screen("character_selection_screen", self.character_selection_screen)
+        self.game_state_manager.add_screen("gameplay_screen", self.gameplay_screen)
 
         # Set the initial state to the start screen
         self.game_state_manager.change_state("start_screen")
