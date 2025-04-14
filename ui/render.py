@@ -2,6 +2,7 @@ import pygame
 from logic.card import Card
 
 class Render:
+    _sprite_cache = {}
     def __init__(self, screen, button) -> None:
         self.screen = screen
         self.button = button
@@ -59,13 +60,27 @@ class Render:
         hheight = rect_height - 2 * offset - 2 * border - 30
         pygame.draw.rect(self.screen, card_colour, (xx, yy, wwidth, hheight))
         
+        # try:
+        #     image = pygame.image.load(f"assets/sprites/{card.sprite}").convert_alpha()
+        #     scaled_image = pygame.transform.scale(image, (100, 100))
+        #     self.screen.blit(scaled_image, (x + rect_width//2 - 50, y + rect_height//2 - 50))
+        # except pygame.error as e:
+        #     print(f"Error loading image: {e}")
+
         # Render sprite image
-        try:
-            image = pygame.image.load(f"assets/sprites/{card.sprite}").convert_alpha()
+        if card.sprite not in self._sprite_cache:
+            try:
+                image = pygame.image.load(f"assets/sprites/{card.sprite}").convert_alpha()
+                self._sprite_cache[card.sprite] = image
+            except Exception as e:
+                print(f"Error loading image: {e}")
+                image = None
+        else:
+            image = self._sprite_cache[card.sprite]
+
+        if image:
             scaled_image = pygame.transform.scale(image, (100, 100))
             self.screen.blit(scaled_image, (x + rect_width//2 - 50, y + rect_height//2 - 50))
-        except Exception as e:
-            print(f"Error loading image: {e}")
 
         # Card name
         text_surface = header_font.render(card.name, True, (255, 255, 255))

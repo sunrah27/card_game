@@ -45,7 +45,6 @@ class Game:
                     exit()
 
             self.game_state_manager.handle_input(events)
-            self.game_state_manager.render()
 
             # Render the current screen
             self.game_state_manager.render()

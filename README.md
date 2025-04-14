@@ -3,6 +3,7 @@
 * Plan this time is to figure out the new code design
     * Need to create logic to manage UI, Screens, Audio, Input etc...
 * Managed to get the game screen added and the code working
+* Learned a bit about optimisation and improved card render
 
 **07/03/2025:**
 * Started building up the start menu.
