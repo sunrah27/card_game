@@ -14,7 +14,6 @@ class Game:
 
         # Set up screen
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption("Card Game")
 
         # Create game state manager
         self.game_state_manager = GameStateManager(self.screen)

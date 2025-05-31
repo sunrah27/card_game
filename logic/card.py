@@ -33,7 +33,7 @@ class Card:
         update_rect():
             Updates the position of the card's rectangle based on its current x and y coordinates.
     """
-    def __init__(self, name: str, desc: str, flavour: str, sprite: str, colour:tuple, value: int, hp: int, atk: int, card_type: str, stack: int, x: int, y: int):
+    def __init__(self, name: str, desc: str, flavour: str, sprite: str, colour:tuple, value: int, hp: int, atk: int, card_type: str, stack: int):
         self.name = name
         self.desc = desc
         self.flavour = flavour
@@ -44,11 +44,9 @@ class Card:
         self.atk = atk
         self.card_type = card_type
         self.stack = stack
-        self.x = x
-        self.y = y
         self.width = 150
         self.height = 210
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.rect = pygame.Rect(0, 0, self.width, self.height)
     
     def use(self):
         pass
@@ -57,7 +55,7 @@ class Card:
         return self.hp <= 0
     
     def update_rect(self):
-        self.rect.topleft = (self.x, self.y)
+        self.rect.topleft = (0, 0)
 
 
 class WitchCard(Card):
@@ -78,8 +76,8 @@ class WitchCard(Card):
             Finds and executes an ability by its name. This method searches through the Witch's 
             abilities and executes the matching one if found.
     """
-    def __init__(self, name: str, desc: str, flavour: str, sprite: str, colour: tuple, value: int, hp: int, atk: int, card_type: str, stack: int, x: int, y: int, abilities: list):
-        super().__init__(name, desc, flavour, sprite, colour, value, hp, atk, card_type, stack, x, y)
+    def __init__(self, name: str, desc: str, flavour: str, sprite: str, colour: tuple, value: int, hp: int, atk: int, card_type: str, stack: int, abilities: list):
+        super().__init__(name, desc, flavour, sprite, colour, value, hp, atk, card_type, stack)
         self.max_hp = hp
         self.max_atk = atk
         self.shield = 0
@@ -108,8 +106,8 @@ class EnemyCard(Card):
             Finds and executes an ability by its name. This method searches through the Enemy's 
             abilities and executes the matching one if found.
     """
-    def __init__(self, name: str, desc: str, flavour: str, sprite: str, colour: tuple, value: int, hp: int, atk: int, card_type: str, stack: int, x: int, y: int, abilities: list):
-        super().__init__(name, desc, flavour, sprite, colour, value, hp, atk, card_type, stack, x, y)
+    def __init__(self, name: str, desc: str, flavour: str, sprite: str, colour: tuple, value: int, hp: int, atk: int, card_type: str, stack: int, abilities: list):
+        super().__init__(name, desc, flavour, sprite, colour, value, hp, atk, card_type, stack)
         self.max_hp = hp
         self.shield = 0
         self.abilities = abilities or []

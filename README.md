@@ -2,6 +2,7 @@
 * Expanded the `Button` class to allow hover effect
 * Discovered an issue where `Button` actions were firing on press
 * Plan to expand `Button` class first to allow customisation
+* Removed `x, y` values from `Card` class and subclasses
 * Still working on figuring out how to handle Game, UI, Audio and Save manager
 * Still working how to implement core game play concept
 

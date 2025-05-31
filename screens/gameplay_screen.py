@@ -23,11 +23,11 @@ class GameplayScreen:
     
     def setup_game(self):
         # Create instances of cards
-        witch1 = WitchCard("Fire Witch", "A fiery sorceress.", "Hot-headed and fearless.", "witch.png", (237, 81, 185), -1, 4, 1,  "Witch", 1, 400, 400, witch_abilities)
-        witch2 = WitchCard("Ninja", "A sneaky ninja.", "Quiet and stealthy, hides in the shadows.", "ninja.png", (237, 181, 185), -1, 2, 2, "Witch", 1, 50, 50, witch_abilities)
-        witch3 = WitchCard("Worker", "A hard worker.", "A busy body always building something.", "boy.png", (50, 50, 250), -1, 1, 4, "Witch", 1, 50, 50, witch_abilities)
+        witch1 = WitchCard("Fire Witch", "A fiery sorceress.", "Hot-headed and fearless.", "witch.png", (237, 81, 185), -1, 4, 1,  "Witch", 1, witch_abilities)
+        witch2 = WitchCard("Ninja", "A sneaky ninja.", "Quiet and stealthy, hides in the shadows.", "ninja.png", (237, 181, 185), -1, 2, 2, "Witch", 1, witch_abilities)
+        witch3 = WitchCard("Worker", "A hard worker.", "A busy body always building something.", "boy.png", (50, 50, 250), -1, 1, 4, "Witch", 1, witch_abilities)
 
-        enemy = EnemyCard("Zombie", "A sneaky zombie.", "Smelly and green.", "zombine.png", (216, 57, 71), -1, 2, 1, "Enemy", 1, 210, 50, enemy_abilities)
+        enemy = EnemyCard("Zombie", "A sneaky zombie.", "Smelly and green.", "zombine.png", (216, 57, 71), -1, 2, 1, "Enemy", 1, enemy_abilities)
 
         # Create stack
         self.stacks.extend([
@@ -107,7 +107,7 @@ class GameplayScreen:
         new_x = 5
         new_y = SCREEN_HEIGHT-100-10-210
 
-        witch1 = WitchCard("Fire Witch", "A fiery sorceress.", "Hot-headed and fearless.", "witch.png", (237, 81, 185), -1, 4, 1, "Witch", 1, new_x, new_y, witch_abilities)
+        witch1 = WitchCard("Fire Witch", "A fiery sorceress.", "Hot-headed and fearless.", "witch.png", (237, 81, 185), -1, 4, 1, "Witch", 1, witch_abilities)
 
         for stack in self.stacks:
             if stack.x == new_x and stack.y == new_y:
