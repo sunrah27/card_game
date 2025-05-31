@@ -1,5 +1,5 @@
 **14/05/2025**
-* Expandwed the `Button` class to allow hover effect
+* Expanded the `Button` class to allow hover effect
 * Discovered an issue where `Button` actions were firing on press
 * Plan to expand `Button` class first to allow customisation
 * Still working on figuring out how to handle Game, UI, Audio and Save manager
