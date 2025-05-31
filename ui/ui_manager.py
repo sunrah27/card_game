@@ -32,29 +32,58 @@ class Button:
     action (function): The function to execute when the button is clicked.
     """
 
-    def __init__(self, text: str, x: int, y: int, width: int, height: int, action):
+    def __init__(self, text: str, x: int, y: int, width: int, height: int, action, t_normal: tuple = None, t_hover: tuple = None, t_pressed:tuple = None):
         self.label = text
-        self.rect = pygame.Rect(x, y, width, height)            # Button's position and size
-        self.action = action                                    # Function to execute when clicked
+        self.rect = pygame.Rect(x, y, width, height)                      # Button's position and size
+        self.action = action                                              # Function to execute when clicked
         self._font_cache = {}
+        self.t_normal = t_normal if t_normal else (255, 255, 255)         # Default normal color
+        self.t_hover = t_hover if t_hover else (170, 170, 170)            # Default hover color
+        self.t_pressed = t_pressed if t_pressed else (100, 100, 100)      # Default pressed color
+        self.bg_normal = (0, 0, 0, 0)                                     # Default background color
+        self.bg_hover = (0, 0, 0, 0)                                      # Default background hover color
+        self.bg_pressed = (0, 0, 0, 0)                                    # Default background pressed color
     
     def update(self):
         """Check if the mouse is over the button and if it's clicked."""
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        if self.rect.collidepoint(mouse_x, mouse_y):
-            if pygame.mouse.get_pressed()[0]:
+        mouse_pos = pygame.mouse.get_pos()
+        mouse_pressed = pygame.mouse.get_pressed()
+        hovering = self.rect.collidepoint(mouse_pos)
+        
+        self.is_hovered = hovering                                        # For hover state
+        self.is_pressed = hovering and mouse_pressed[0]                   # For hover and pressed state
+
+        if hovering:
+            if mouse_pressed[0] and not self._was_clicked:
+                self._was_clicked = True
+            elif not mouse_pressed[0] and self._was_clicked:
                 self.click()
+                self._was_clicked = False
+        else:
+            self._was_clicked = False
     
     def render(self, screen):
         """Render the button."""
         button_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
-        button_surface.fill((0, 0, 0, 0))
+        
+        """Choose buttons colour based on state"""
+        if getattr(self, 'is_pressed', False):
+            colour = self.t_pressed
+            button_colour = button_surface.fill(self.bg_pressed)
+        elif getattr(self, 'is_hovered', False):
+            colour = self.t_hover
+            button_colour = button_surface.fill(self.bg_hover)
+        else:
+            colour = self.t_normal
+            button_colour = button_surface.fill(self.bg_normal)
+
+        button_surface.fill(button_colour)
         screen.blit(button_surface, self.rect.topleft)
 
         if 36 not in self._font_cache:
             self._font_cache[36] = pygame.font.Font(None, 36)       # Cache the font object for reuse
         font = self._font_cache[36]                                 # Use the cached font object
-        text = font.render(self.label, True, (0,0,0))               # Render text
+        text = font.render(self.label, True, (colour))              # Render text
         
         # Center the text on the button rect
         text_rect = text.get_rect(center=self.rect.center)

@@ -49,6 +49,8 @@ class GameplayScreen:
             self.renderer.draw_stack(stack)
 
     def handle_input(self, events):
+        self.add_card_button.update()
+
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -56,8 +58,6 @@ class GameplayScreen:
 
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-                if self.add_card_button.is_clicked(mouse_pos):
-                    self.add_card_button.click()
 
                 for stack in reversed(self.stacks):
                     index = stack.get_clicked_card_index(mouse_pos)

@@ -1,3 +1,10 @@
+**14/05/2025**
+* Expandwed the `Button` class to allow hover effect
+* Discovered an issue where `Button` actions were firing on press
+* Plan to expand `Button` class first to allow customisation
+* Still working on figuring out how to handle Game, UI, Audio and Save manager
+* Still working how to implement core game play concept
+
 **14/04/2025**
 * Decided to pick up again
 * Plan this time is to figure out the new code design
