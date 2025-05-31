@@ -12,7 +12,7 @@ class GameplayScreen:
         self.game_state_manager = game_state_manager
 
         # Buttons
-        self.add_card_button = Button("Add Card", 0, SCREEN_HEIGHT-100, 150, 100, self.add_card)
+        self.add_card_button = Button("Add Card", 0, SCREEN_HEIGHT-100, 150, 100, self.add_card,bg_normal=(255,0,0,255), bg_hover=(150,0,0,255), bg_pressed=(150,0,0,255))
 
         self.renderer = Render(self.screen, None)
         self.stacks = []

@@ -2,7 +2,7 @@ import pygame
 
 class UIManager:
     def __init__(self, screen):
-        # UI elements go here, for now, we are just holding simple placeholder
+        # UI elements go here, for now, we are just simple placeholder
         self.screen = screen
         self.ui_elements = []
     
@@ -32,7 +32,7 @@ class Button:
     action (function): The function to execute when the button is clicked.
     """
 
-    def __init__(self, text: str, x: int, y: int, width: int, height: int, action, t_normal: tuple = None, t_hover: tuple = None, t_pressed:tuple = None):
+    def __init__(self, text: str, x: int, y: int, width: int, height: int, action, t_normal: tuple = None, t_hover: tuple = None, t_pressed:tuple = None, bg_normal: tuple = None, bg_hover: tuple = None, bg_pressed: tuple = None):
         self.label = text
         self.rect = pygame.Rect(x, y, width, height)                      # Button's position and size
         self.action = action                                              # Function to execute when clicked
@@ -40,9 +40,9 @@ class Button:
         self.t_normal = t_normal if t_normal else (255, 255, 255)         # Default normal color
         self.t_hover = t_hover if t_hover else (170, 170, 170)            # Default hover color
         self.t_pressed = t_pressed if t_pressed else (100, 100, 100)      # Default pressed color
-        self.bg_normal = (0, 0, 0, 0)                                     # Default background color
-        self.bg_hover = (0, 0, 0, 0)                                      # Default background hover color
-        self.bg_pressed = (0, 0, 0, 0)                                    # Default background pressed color
+        self.bg_normal = bg_normal if bg_normal else (0, 0, 0, 0)         # Default background color
+        self.bg_hover = bg_hover if bg_hover else (0, 0, 0, 0)            # Default background hover color
+        self.bg_pressed = bg_pressed if bg_pressed else (0, 0, 0, 0)      # Default background pressed color
     
     def update(self):
         """Check if the mouse is over the button and if it's clicked."""
@@ -69,15 +69,14 @@ class Button:
         """Choose buttons colour based on state"""
         if getattr(self, 'is_pressed', False):
             colour = self.t_pressed
-            button_colour = button_surface.fill(self.bg_pressed)
+            button_surface.fill(self.bg_pressed)
         elif getattr(self, 'is_hovered', False):
             colour = self.t_hover
-            button_colour = button_surface.fill(self.bg_hover)
+            button_surface.fill(self.bg_hover)
         else:
             colour = self.t_normal
-            button_colour = button_surface.fill(self.bg_normal)
+            button_surface.fill(self.bg_normal)
 
-        button_surface.fill(button_colour)
         screen.blit(button_surface, self.rect.topleft)
 
         if 36 not in self._font_cache:
